@@ -1,21 +1,17 @@
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  clearError,
-  deleteBlog,
-  getBlogsAdmin,
-} from "../../actions/blogAction";
-import {
-  BLOG_DELETE_RESET,
-  UPDATE_STATUS_RESET,
-} from "../../constants/blogConstants";
+import { deleteBlog } from "../../actions/blogAction";
+import { getAllUsers } from "../../actions/userAction";
+import { BLOG_DELETE_RESET } from "../../constants/blogConstants";
+import { UPDATE_ROLE_RESET } from "../../constants/userConstants";
 import { CustomNoRowsOverlay } from "./MaterialAsset/Asset";
-import ToolTip from "./MaterialAsset/ToolTip";
+import ChangeRollToolTip from "./MaterialAsset/ChangeRollToolTip";
 
-export default function BlogsList() {
+export default function AuthorList() {
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [deleteId, setDeleteId] = useState(false);
@@ -24,21 +20,17 @@ export default function BlogsList() {
   const { error: deleteError, isDeleted } = useSelector(
     (state) => state.delete
   );
-  const { success } = useSelector((state) => state.status);
+  const { success, error: roleError } = useSelector(
+    (state) => state.userDetails
+  );
 
   const {
-    blogs,
+    users,
     loading,
-    error: blogError,
-  } = useSelector((state) => state.blogs);
+    error: userError,
+  } = useSelector((state) => state.users);
 
   useEffect(() => {
-    if (blogError) {
-      toast.error(blogError, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      dispatch(clearError());
-    }
     if (deleteError) {
       toast.error(deleteError, {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -48,7 +40,7 @@ export default function BlogsList() {
       toast.success("Status changed", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
-      dispatch({ type: UPDATE_STATUS_RESET });
+      dispatch({ type: UPDATE_ROLE_RESET });
     }
     if (isDeleted) {
       toast.success("Blog Deleted", {
@@ -57,9 +49,9 @@ export default function BlogsList() {
       setShow(false);
       dispatch({ type: BLOG_DELETE_RESET });
     }
-    dispatch(getBlogsAdmin());
-  }, [dispatch, deleteError, blogError, isDeleted, success, refresh]);
-  console.log(refresh);
+    dispatch(getAllUsers());
+  }, [dispatch, deleteError, isDeleted, success, roleError, refresh]);
+
   const deleteOrderHandler = (e) => {
     e.preventDefault();
     if (deleteId) {
@@ -75,47 +67,51 @@ export default function BlogsList() {
   const columns = [
     {
       field: "id",
-      headerName: "Order ID",
+      headerName: "User ID",
       minWidth: 150,
       flex: 0.3,
     },
     {
-      field: "title",
-      headerName: "Blog Title",
+      field: "name",
+      headerName: "Name",
       minWidth: 150,
-      flex: 0.2,
-    },
-    {
-      field: "category",
-      headerName: "Category",
-      minWidth: 270,
-      flex: 0.2,
-    },
-    {
-      field: "author",
-      headerName: "Author",
-      minWidth: 170,
-      flex: 0.15,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      minWidth: 270,
       flex: 0.2,
       renderCell: (params) => {
         return (
-          <div className="actions">
-            <ToolTip params={params} />
+          <div className="flex items-center justify-between gap-3">
+            <div className="w-8 h-8 rounded-full overflow-hidden">
+              <img
+                src={PF + params.getValue(params.id, "profilePicture")}
+                alt=""
+              />
+            </div>
+            <div className="text-sm font-normal">
+              {params.getValue(params.id, "name")}
+            </div>
           </div>
         );
       },
     },
+
+    {
+      field: "role",
+      headerName: "Role",
+      minWidth: 170,
+      flex: 0.15,
+      renderCell: (params) => {
+        return (
+          <div className="actions">
+            <ChangeRollToolTip params={params} />
+          </div>
+        );
+      },
+    },
+
     {
       field: "date",
       headerName: "Date",
       minWidth: 270,
       sortable: true,
-      type: "number",
       flex: 0.2,
     },
     {
@@ -128,13 +124,6 @@ export default function BlogsList() {
       renderCell: (params) => {
         return (
           <div className="actions">
-            <Link
-              className="mx-2 py-1 px-2  bg-indigo-100 text-indigo-700 text-xs rounded"
-              to={`/dashboard/blog/${params.getValue(params.id, "id")}/edit`}
-            >
-              Edit
-            </Link>
-
             <button
               className="mx-2 py-1 px-2 bg-red-100 text-red-700 text-xs rounded"
               onClick={function (e) {
@@ -152,15 +141,14 @@ export default function BlogsList() {
   ];
   const rows = [];
 
-  blogs &&
-    blogs.forEach((item) => {
+  users &&
+    users.forEach((item) => {
       rows.push({
         id: item._id,
-        title: item.title,
-        status: item.status,
-        category: item.category,
+        name: item.name,
+        role: item.role,
         date: newDate(item.createdAt),
-        author: item.user.name,
+        profilePicture: item.profilePicture,
       });
     });
 
@@ -168,7 +156,7 @@ export default function BlogsList() {
     <>
       <div className="my-4 p-4 bg-white ">
         <div className="flex items-center justify-between my-2">
-          <p className="font-bold text-md">Blog's</p>
+          <p className="font-bold text-md">Author's</p>
           <button
             onClick={() => setRefresh(!refresh)}
             className="rounded-sm px-2 py-1 text-white text-sm bg-indigo-500"

@@ -33,6 +33,12 @@ import {
   GET_SAVED_FAIL,
   GET_SAVED_REQUEST,
   GET_SAVED_SUCCESS,
+  IS_SAVED_FAIL,
+  IS_SAVED_REQUEST,
+  IS_SAVED_SUCCESS,
+  SAVE_BLOG_FAIL,
+  SAVE_BLOG_REQUEST,
+  SAVE_BLOG_SUCCESS,
   UPDATE_BLOG_FAIL,
   UPDATE_BLOG_REQUEST,
   UPDATE_BLOG_RESET,
@@ -49,13 +55,17 @@ import {
 export const blogReducer = (state = { blogs: [] }, action) => {
   switch (action.type) {
     case ALL_BLOG_REQUEST:
-    case BLOG_DETAILS_REQUEST:
     case CREATE_BLOG_REQUEST:
     case GET_SAVED_REQUEST:
     case UPDATE_BLOG_REQUEST:
       return {
         loading: true,
-        blogs: [],
+        ...state,
+      };
+    case BLOG_DETAILS_REQUEST:
+      return {
+        loading: true,
+        ...state,
       };
 
     case ALL_BLOG_SUCCESS:
@@ -109,8 +119,8 @@ export const getUserBlogs = (state = { blogs: [] }, action) => {
   switch (action.type) {
     case USER_BLOGS_REQUEST:
       return {
+        ...state,
         loading: true,
-        blogs: [],
       };
 
     case USER_BLOGS_SUCCESS:
@@ -127,6 +137,8 @@ export const getUserBlogs = (state = { blogs: [] }, action) => {
     case CLEAR_ERROR:
       return {
         ...state,
+        loading: false,
+
         error: null,
       };
     default:
@@ -139,8 +151,8 @@ export const createCommentReducer = (state = {}, action) => {
   switch (action.type) {
     case COMMENT_REQUEST:
       return {
+        ...state,
         loading: true,
-        success: false,
       };
     case COMMENT_SUCCESS:
       return {
@@ -271,6 +283,40 @@ export const statusReducer = (state = {}, action) => {
         success: false,
       };
     case UPDATE_STATUS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+// Update Status
+export const checkSavedBlog = (state = {}, action) => {
+  switch (action.type) {
+    case IS_SAVED_REQUEST:
+    case SAVE_BLOG_REQUEST:
+      return {
+        loading: true,
+        isSaved: false,
+      };
+
+    case IS_SAVED_SUCCESS:
+    case SAVE_BLOG_SUCCESS:
+      return {
+        loading: false,
+        isSaved: action.payload,
+      };
+
+    case IS_SAVED_FAIL:
+    case SAVE_BLOG_FAIL:
       return {
         ...state,
         loading: false,

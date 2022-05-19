@@ -7,7 +7,7 @@ import { getAllCategory } from "../../actions/categoryAction";
 import { getAllUsers } from "../../actions/userAction";
 import MetaData from "../../utils/MetaData";
 import BlogCard from "../Blog/Card/BlogCard";
-import RecentBlogCard from "../Blog/Card/RecentBlogCard";
+import Card from "../Blog/Card/Card";
 import Container from "../Layout/Container";
 import Loader from "../Layout/Loader";
 import Navbar from "../Navbar/Navbar";
@@ -19,9 +19,7 @@ export default function Header() {
   //Get data form redux state
   const { blogs, error, loading } = useSelector((state) => state.blogs);
   const { users, error: usersError } = useSelector((state) => state.users);
-  const { category, error: categoryError } = useSelector(
-    (state) => state.category
-  );
+  const { category } = useSelector((state) => state.category);
 
   useEffect(() => {
     if (error) {
@@ -67,7 +65,7 @@ export default function Header() {
                       {blogs &&
                         blogs.slice(0, 7).map((blog, index) => (
                           <div key={index} className="col-span-1">
-                            <RecentBlogCard blog={blog} />
+                            <Card blog={blog} />
                           </div>
                         ))}
                     </div>

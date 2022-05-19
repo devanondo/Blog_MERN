@@ -2,7 +2,10 @@ import { Route, Routes } from "react-router-dom";
 import BlogDetails from "../components/Blog/BlogDetails";
 import CategoryPage from "../components/Blog/CategoryPage";
 import EditBlog from "../components/Blog/EditBlog";
+import Follower from "../components/Blog/Follower/Follower";
+import Following from "../components/Blog/Follower/Following";
 import SavedBlog from "../components/Blog/SavedBlog";
+import AuthorList from "../components/Dashboard/AuthorList";
 import BlogsList from "../components/Dashboard/BlogsList";
 import Category from "../components/Dashboard/Category";
 import LineChart from "../components/Dashboard/Chart/LineChart";
@@ -31,6 +34,8 @@ function Routing() {
           <Route index element={<UserContainer />} />
           <Route path="about" element={<About />} />
           <Route path="blogs" element={<UserBlogs />} />
+          <Route path="follower" element={<Follower />} />
+          <Route path="following" element={<Following />} />
           <Route path="blogs/edit/:blogid" element={<EditBlog />} />
           <Route path="saved%blogs" element={<SavedBlog />} />
         </Route>
@@ -49,6 +54,7 @@ function Routing() {
         <Route path="about" element={<About />} />
         <Route path="blogs" element={<BlogsList />} />
         <Route path="category" element={<Category />} />
+        <Route path="authors" element={<AuthorList />} />
         <Route path="blog/:id/edit" element={<SingleBlog />} />
         <Route path="*" element={<NotFound />} />
       </Route>

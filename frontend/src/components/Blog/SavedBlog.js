@@ -13,8 +13,13 @@ export default function SavedBlog() {
   console.log(blogs);
 
   return (
-    <div>
-      {blogs && blogs.map((item, index) => <Card blog={item} key={index} />)}
+    <div className="grid md:grid-cols-3 gap-2">
+      {blogs &&
+        blogs.map((item, index) => (
+          <div className="col-span-1">
+            <Card blog={item} key={index} />
+          </div>
+        ))}
     </div>
   );
 }

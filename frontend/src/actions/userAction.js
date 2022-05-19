@@ -20,6 +20,9 @@ import {
   UNFOLLOW_FAIL,
   UNFOLLOW_REQUEST,
   UNFOLLOW_SUCCESS,
+  UPDATE_ROLE_FAIL,
+  UPDATE_ROLE_REQUEST,
+  UPDATE_ROLE_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -73,15 +76,16 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 
-//Get all users
+//Get all users --Admin
 export const getAllUsers = () => async (dispatch) => {
   try {
     dispatch({
       type: ALL_USER_REQUEST,
     });
-    const { data } = await axios.get("/api/blog/users");
+    const { data } = await axios.get("/api/blog/admin/users/all");
 
     dispatch({ type: ALL_USER_SUCCESS, payload: data.users });
+    console.log(data);
   } catch (error) {
     dispatch({
       type: ALL_USER_FAIL,
@@ -102,6 +106,23 @@ export const getUserDetails = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_DETAILS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+//Update user Role
+export const updateUserRole = (id, role) => async (dispatch) => {
+  try {
+    dispatch({
+      type: UPDATE_ROLE_REQUEST,
+    });
+    const { data } = await axios.put(`/api/blog/admin/user/${id}`, role);
+
+    dispatch({ type: UPDATE_ROLE_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_ROLE_FAIL,
       payload: error.response.data.message,
     });
   }
@@ -144,7 +165,7 @@ export const follow = (id) => async (dispatch) => {
 
     let { data } = await axios.put(`/api/blog/user/${id}/follow`);
 
-    dispatch({ type: FOLLOW_SUCCESS, payload: data.message });
+    dispatch({ type: FOLLOW_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: FOLLOW_FAIL,
@@ -155,12 +176,13 @@ export const follow = (id) => async (dispatch) => {
 
 //UnFollow a user
 export const unFollow = (id) => async (dispatch) => {
+  console.log(id);
   try {
     dispatch({ type: UNFOLLOW_REQUEST });
 
     let { data } = await axios.put(`/api/blog/user/${id}/unfollow`);
 
-    dispatch({ type: UNFOLLOW_SUCCESS, payload: data.message });
+    dispatch({ type: UNFOLLOW_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: UNFOLLOW_FAIL,

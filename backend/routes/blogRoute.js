@@ -15,6 +15,7 @@ const {
   getAllBlogsAdmin,
   getUserBlogs,
   getSaveBlogs,
+  isSavedBlogs,
 } = require("../controller/blogController");
 const {
   createCategory,
@@ -46,6 +47,9 @@ router.get("/user/:id", getUserBlogs);
 
 //Get all saveBlogs
 router.get("/saveblog/all", isAuthenticatedUser, getSaveBlogs);
+
+//Checking blog in saved blogs exist or not
+router.get("/issaved/:id", isAuthenticatedUser, isSavedBlogs);
 
 //Get a Single blog
 router.get("/:id", getSingleBlog);

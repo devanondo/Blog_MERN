@@ -105,7 +105,7 @@ export default function CreateBlog() {
               className="w-full h-full bg-gray-900 opacity-50 z-0 absolute inset-0"
             />
             <div className="mx-auto">
-              <div className="flex items-center justify-center h-full w-full px-4 sm:px-0 ">
+              <div className="flex items-center justify-center h-screen   w-full px-4 sm:px-0 ">
                 <div className="bg-white rounded-md shadow max-w-4xl w-full fixed z-20  ">
                   <div className="bg-gray-100 w-full rounded-tl-md rounded-tr-md p-4 flex items-center justify-between">
                     <p className="text-base font-semibold">Create Blog</p>
@@ -137,7 +137,7 @@ export default function CreateBlog() {
                       </svg>
                     </button>
                   </div>
-                  <div className="px-6 overflow-y-auto h-96">
+                  <div className="px-6 overflow-y-auto m-h-90vh">
                     <form className="mt-5" encType="multipart/form-data">
                       <div className="flex flex-col items-center justify-center max-w-fit mx-auto mb-8 rounded-lg overflow-hidden">
                         {coverImagePreview ? (

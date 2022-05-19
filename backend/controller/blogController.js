@@ -59,7 +59,7 @@ exports.getAllBlogs = asyncError(async (req, res, next) => {
 
 //Get all Blogs --Admin
 exports.getAllBlogsAdmin = asyncError(async (req, res, next) => {
-  const blogs = await Blog.find();
+  const blogs = await Blog.find().populate("user");
   if (!blogs) {
     return next(new ErrorHandler("Blog not found!", 404));
   }
@@ -98,6 +98,26 @@ exports.getSaveBlogs = asyncError(async (req, res, next) => {
     success: true,
     blogs,
   });
+});
+
+//Checking saved blogs --single --user --admin
+exports.isSavedBlogs = asyncError(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    new ErrorHandler("User not found!", 500);
+  }
+
+  if (user.savedBlogs.includes(req.params.id)) {
+    res.status(200).json({
+      success: true,
+      isSaved: true,
+    });
+  } else {
+    res.status(200).json({
+      success: true,
+      isSaved: false,
+    });
+  }
 });
 
 //Get users all Blogs

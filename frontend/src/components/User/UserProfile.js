@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getUserBlogs } from "../../actions/blogAction";
 import {
   clearError,
   follow,
   getUserDetails,
+  loadUser,
   unFollow,
 } from "../../actions/userAction";
+import { FOLLOW_RESET } from "../../constants/userConstants";
 import slugify from "../../utils/SlugGenerator";
 import Container from "../Layout/Container";
 import Loader from "../Layout/Loader";
@@ -20,38 +22,57 @@ export default function UserProfile() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  let navigate = useNavigate();
 
   const { user, loading, error } = useSelector((state) => state.userDetails);
-  const { user: loadUser } = useSelector((state) => state.user);
+  console.log(user);
+  const { user: loggedUser } = useSelector((state) => state.user);
   const { blogs: userBlogs, error: blogsError } = useSelector(
     (state) => state.userBlogs
   );
-  const { message } = useSelector((state) => state.follow);
+  const {
+    message,
+    success,
+    error: followError,
+  } = useSelector((state) => state.follow);
 
-  let followUser = loadUser?.followings?.find((item) => item._id === id);
+  useEffect(() => {
+    if (followError) {
+      toast.error(followError, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      dispatch(clearError());
+    }
+    if (success) {
+      toast.success(message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      dispatch({ type: FOLLOW_RESET });
+    }
+    dispatch(loadUser());
+  }, [followError, success, dispatch, message]);
 
   useEffect(() => {
     if (error) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
+
+      navigate("/notfound");
       dispatch(clearError());
     }
+
     if (blogsError) {
       toast.error(blogsError, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       dispatch(clearError());
     }
-    if (message) {
-      toast.success(message, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-    }
 
     dispatch(getUserDetails(id));
     dispatch(getUserBlogs(id));
-  }, [dispatch, error, id, blogsError, message]);
+  }, [dispatch, error, id, blogsError]);
+  let followUser = loggedUser?.followings?.find((item) => item._id === id);
 
   return (
     <>
@@ -63,12 +84,12 @@ export default function UserProfile() {
             <Navbar />
             <Container
               component={
-                <div className="flex items-center justify-center w-full py-8">
+                <div className="flex items-center justify-center w-full">
                   {/* Card code block start */}
-                  <div className="bg-white  px-2 md:px-0 dark:bg-gray-800 shadow rounded">
+                  <div className="bg-white  px-2 md:px-0 dark:bg-gray-800 shadow">
                     <div className="relative">
                       <img
-                        className="h-56 shadow rounded-t w-full object-cover object-center"
+                        className="h-56 shadow  w-full object-cover object-center"
                         src="https://tuk-cdn.s3.amazonaws.com/assets/components/grid_cards/gc_29.png"
                         alt=""
                       />
@@ -91,8 +112,8 @@ export default function UserProfile() {
                             <h2 className="mb-3 xl:mb-0 xl:mr-4 text-2xl text-gray-800 dark:text-gray-100 font-medium tracking-normal">
                               {user.name}
                             </h2>
-                            {loadUser &&
-                              loadUser._id !== id &&
+                            {loggedUser &&
+                              loggedUser._id !== id &&
                               (followUser ? (
                                 <div
                                   onClick={function () {
@@ -144,7 +165,7 @@ export default function UserProfile() {
                             </div>
                           </div>
 
-                          {loadUser && loadUser._id === id ? (
+                          {loggedUser && loggedUser._id === id ? (
                             <CreateBlog />
                           ) : (
                             <button className="mx-auto focus:outline-none md:ml-5 bg-indigo-700 dark:bg-indigo-600 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-sm">
@@ -182,19 +203,21 @@ export default function UserProfile() {
                           >
                             Blogs
                           </NavLink>
+                          {loggedUser?._id === user?._id && (
+                            <NavLink
+                              className={({ isActive }) =>
+                                `p-2 my-1 hover:bg-indigo-300 hover:text-white block w-full   ${
+                                  isActive && "bg-indigo-500 text-white"
+                                } `
+                              }
+                              to={`/profile/${
+                                user && slugify(user?.name)
+                              }/${id}/saved%blogs`}
+                            >
+                              Saved Blogs
+                            </NavLink>
+                          )}
 
-                          <NavLink
-                            className={({ isActive }) =>
-                              `p-2 my-1 hover:bg-indigo-300 hover:text-white block w-full   ${
-                                isActive && "bg-indigo-500 text-white"
-                              } `
-                            }
-                            to={`/profile/${
-                              user && slugify(user?.name)
-                            }/${id}/saved%blogs`}
-                          >
-                            Saved Blogs
-                          </NavLink>
                           <NavLink
                             className={({ isActive }) =>
                               `p-2 my-1 hover:bg-indigo-300 hover:text-white block w-full   ${
@@ -221,7 +244,7 @@ export default function UserProfile() {
                           </NavLink>
                         </div>
                         <div className="col-span-4">
-                          <UserContainer />
+                          <UserContainer user={user} />
                         </div>
                       </div>
                     </div>

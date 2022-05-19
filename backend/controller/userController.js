@@ -50,9 +50,10 @@ exports.logoutUser = asyncError(async (req, res, next) => {
   });
 });
 
-//Get user details
-exports.getUserDetails = asyncError(async (req, res, next) => {
-  const user = await User.findById(req.params?.id || req.user.id);
+//Get Logged in user
+exports.getLoggedInUser = asyncError(async (req, res, next) => {
+  let user = await User.findById(req.user.id);
+
   if (!user) {
     new ErrorHandler("User not found!", 500);
   } else {
@@ -74,6 +75,33 @@ exports.getUserDetails = asyncError(async (req, res, next) => {
     success: true,
     user,
   });
+});
+
+//Get user details
+exports.getUserDetails = asyncError(async (req, res, next) => {
+  let user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  } else {
+    let follower = await Promise.all(
+      user.followers.map((uId) => {
+        return User.findById(uId);
+      })
+    );
+    let following = await Promise.all(
+      user.followings.map((uId) => {
+        return User.findById(uId);
+      })
+    );
+
+    user.followings = following;
+    user.followers = follower;
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  }
 });
 
 //Update Password
@@ -165,7 +193,7 @@ exports.saveBlogs = asyncError(async (req, res, next) => {
     });
     res.status(200).json({
       success: true,
-      saved: true,
+      isSaved: true,
     });
   } else {
     await user.updateOne({
@@ -173,7 +201,7 @@ exports.saveBlogs = asyncError(async (req, res, next) => {
     });
     res.status(200).json({
       success: true,
-      saved: false,
+      isSaved: false,
     });
   }
 });
@@ -217,7 +245,6 @@ exports.unFollowUser = asyncError(async (req, res, next) => {
 
   const user = await User.findById(req.params.id);
   const currentUser = await User.findById(req.user.id);
-
   if (!user) {
     return next(new ErrorHandler("User not found!", 404));
   }
@@ -234,9 +261,6 @@ exports.unFollowUser = asyncError(async (req, res, next) => {
       message: "User UnFollowed successfully",
     });
   } else {
-    res.status(200).json({
-      success: true,
-      message: "User already UnFollowed",
-    });
+    next(new ErrorHandler("User not found!", 404));
   }
 });

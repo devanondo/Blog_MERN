@@ -22,6 +22,9 @@ import {
   GET_SAVED_FAIL,
   GET_SAVED_REQUEST,
   GET_SAVED_SUCCESS,
+  IS_SAVED_FAIL,
+  IS_SAVED_REQUEST,
+  IS_SAVED_SUCCESS,
   UPDATE_BLOG_FAIL,
   UPDATE_BLOG_REQUEST,
   UPDATE_BLOG_SUCCESS,
@@ -187,13 +190,14 @@ export const getUserBlogs = (id) => async (dispatch) => {
 
 //Get user all blogs
 export const createComment = (id, message) => async (dispatch) => {
+  console.log(id, message);
   try {
     dispatch({
       type: COMMENT_REQUEST,
     });
 
     const { data } = await axios.post(`/api/blog/comment/${id}`, message);
-
+    console.log(data);
     dispatch({
       type: COMMENT_SUCCESS,
       payload: data.success,
@@ -255,7 +259,6 @@ export const clearError = () => async (dispatch) => {
 };
 
 //Get saved Blogs --User
-//Get user all blogs
 export const getSavedBlogs = (id) => async (dispatch) => {
   try {
     dispatch({
@@ -271,6 +274,48 @@ export const getSavedBlogs = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_SAVED_FAIL,
+      payload: error.response?.data.message,
+    });
+  }
+};
+
+//Check saved blogs
+export const isSavedBlogs = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: IS_SAVED_REQUEST,
+    });
+
+    const { data } = await axios.get(`/api/blog/issaved/${id}`);
+    console.log(data);
+    dispatch({
+      type: IS_SAVED_SUCCESS,
+      payload: data.isSaved,
+    });
+  } catch (error) {
+    dispatch({
+      type: IS_SAVED_FAIL,
+      payload: error.response?.data.message,
+    });
+  }
+};
+
+//Check saved-unsave blog
+export const saveBlog = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: IS_SAVED_REQUEST,
+    });
+
+    const { data } = await axios.put(`/api/blog/save/${id}`);
+    console.log(data);
+    dispatch({
+      type: IS_SAVED_SUCCESS,
+      payload: data.isSaved,
+    });
+  } catch (error) {
+    dispatch({
+      type: IS_SAVED_FAIL,
       payload: error.response?.data.message,
     });
   }

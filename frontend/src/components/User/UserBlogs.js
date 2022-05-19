@@ -27,7 +27,6 @@ export default function UserBlogs() {
 
     dispatch(getUserBlogs(id));
   }, [dispatch, id, blogsError]);
-  console.log(userBlogs);
 
   let filteredBlogs =
     userBlogs &&

@@ -15,6 +15,7 @@ const {
   unFollowUser,
   followUser,
   saveBlogs,
+  getLoggedInUser,
 } = require("../controller/userController");
 const upload = require("../multer/upload");
 const { isAuthenticatedUser, authorizedRole } = require("../middleware/auth");
@@ -29,7 +30,7 @@ router.post("/login", loginUser);
 router.get("/logout", logoutUser);
 
 //Get a user Details
-router.get("/me", isAuthenticatedUser, getUserDetails);
+router.get("/me", isAuthenticatedUser, getLoggedInUser);
 
 //Get other user details
 router.get("/userinfo/:id", getUserDetails);
@@ -41,7 +42,12 @@ router.put("/save/:id", isAuthenticatedUser, saveBlogs);
 router.put("/password/update", isAuthenticatedUser, updatePassword);
 
 //Get all users --Admin
-router.get("/users", getAllUsers);
+router.get(
+  "/admin/users/all",
+  isAuthenticatedUser,
+  authorizedRole("admin"),
+  getAllUsers
+);
 
 //Get a single User --Admin
 router.get(

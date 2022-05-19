@@ -17,13 +17,27 @@ import {
   COMMENT_RESET,
 } from "../../constants/blogConstants";
 import MetaData from "../../utils/MetaData";
-import slugify from "../../utils/SlugGenerator";
 import Container from "../Layout/Container";
 import Loader from "../Layout/Loader";
 import Navbar from "../Navbar/Navbar";
 import SubHeader from "../SubHeader/SubHeader";
+import FollowCard from "./Follower/FollowCard";
 
 export default function BlogDetails() {
+  let { blog, error, loading } = useSelector((state) => state.blogs);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const { success, error: commentError } = useSelector(
+    (state) => state.newComment
+  );
+  console.log(success);
+  const { isDeleted, error: deleteError } = useSelector(
+    (state) => state.delete
+  );
+
+  const { blogs: userBlogs, error: blogsError } = useSelector(
+    (state) => state.userBlogs
+  );
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [dialog, setDialog] = useState(false);
   const [comment, setComment] = useState("");
@@ -33,32 +47,14 @@ export default function BlogDetails() {
   const dispatch = useDispatch();
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
-  const { blog, error, loading } = useSelector((state) => state.blogs);
-  const { user, isAuthenticated } = useSelector((state) => state.user);
-  const { success, error: commentError } = useSelector(
-    (state) => state.newComment
-  );
-  const { isDeleted, error: deleteError } = useSelector(
-    (state) => state.delete
-  );
-
-  const { blogs: userBlogs, error: blogsError } = useSelector(
-    (state) => state.userBlogs
-  );
-
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const open = Boolean(anchorEl);
   const popId = open ? "simple-popover" : undefined;
 
   useEffect(() => {
-    if (error) {
-      toast.error(error, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      dispatch(clearError());
-    }
     if (commentError) {
       toast.error(commentError, {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -71,7 +67,10 @@ export default function BlogDetails() {
       });
       setAnchorEl(null);
       dispatch({ type: COMMENT_RESET });
+
+      setComment("");
     }
+
     if (isDeleted) {
       toast.success("Comment deleted successfully", {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -79,9 +78,18 @@ export default function BlogDetails() {
       setAnchorEl(null);
       dispatch({ type: COMMENT_DELETE_RESET });
     }
+  }, [success, commentError, dispatch, isDeleted]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      dispatch(clearError());
+    }
 
     dispatch(getBlogDetails(id));
-  }, [dispatch, error, id, success, commentError, isDeleted, deleteError]);
+  }, [dispatch, error, id, success, isDeleted]);
 
   useEffect(() => {
     if (blogsError) {
@@ -104,15 +112,18 @@ export default function BlogDetails() {
   };
   const commentSubmitHandler = (e) => {
     e.preventDefault();
+
     if (comment) {
       dispatch(createComment(id, data));
+
+      console.log(blog);
       setDialog(false);
-      setComment("");
     }
   };
 
   const handleDeleteComment = (mid) => {
     dispatch(deleteComment(id, mid));
+    blog = blog.comments.filter((item) => item._id !== mid);
   };
 
   return (
@@ -307,36 +318,7 @@ export default function BlogDetails() {
                     {/* -------------------------------------- */}
 
                     <div className="col-span-3">
-                      <div className="border p-4 rounded">
-                        <h2 className="text-sm pb-4">About post</h2>
-                        <div className="w-20 h-20 border-md border-gray-300 rounded-full overflow-hidden mx-auto">
-                          <img src={PF + blog.user.profilePicture} alt="" />
-                        </div>
-                        <div className="py-2 text-center">
-                          <h2 className="text-sm font-bold">
-                            {blog.user.name}
-                          </h2>
-                          <h3 className="text-xs font-light">
-                            Dhaka Bangladesh
-                          </h3>
-                        </div>
-                        <div className="flex justify-between py-4 items-center">
-                          <Link
-                            to={`/profile/${
-                              blog.user && slugify(blog.user?.name)
-                            }/${blog.user?._id}`}
-                            className="border text-xs ease-in-out duration-500 hover:bg-indigo-500 hover:text-white border-indigo-500 bg-transparent rounded-2xl py-1 px-2 text-indigo-500"
-                          >
-                            View Profile
-                          </Link>
-                          <Link
-                            to={`/`}
-                            className="border text-xs ease-in-out duration-500 bg-indigo-500 hover:bg-white text-white border-indigo-500 bg-transparent rounded-2xl py-1 px-2 hover:text-indigo-500"
-                          >
-                            Follow +
-                          </Link>
-                        </div>
-                      </div>
+                      <FollowCard follower={blog?.user} show={true} />
 
                       <div className="my-4 border rounded p-4">
                         <div className="flex justify-between items-center">

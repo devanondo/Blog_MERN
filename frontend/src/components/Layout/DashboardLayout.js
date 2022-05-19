@@ -76,7 +76,7 @@ export default function DashboardLayout() {
                   </span>
                 </div>
               </li>
-              {/* <li className="pl-6 cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mb-4 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
+              <li className="pl-6 cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mb-4 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
                 <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -94,9 +94,9 @@ export default function DashboardLayout() {
                     <polyline points="8 16 10 10 16 8 14 14 8 16" />
                     <circle cx={12} cy={12} r={9} />
                   </svg>
-                  <span className="ml-2">Performance</span>
+                  <Link to="/dashboard/authors"> All Author's</Link>
                 </div>
-              </li> */}
+              </li>
               <li className="pl-6 cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
                 <div className="flex items-center">
                   <svg

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import {
   blogReducer,
   categoryReducer,
+  checkSavedBlog,
   createCommentReducer,
   deleteReducer,
   getUserBlogs,
@@ -26,6 +27,7 @@ const store = configureStore({
     follow: followReducer,
     category: categoryReducer,
     status: statusReducer,
+    isBlogSave: checkSavedBlog,
   },
 });
 
