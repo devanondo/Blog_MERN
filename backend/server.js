@@ -43,6 +43,12 @@ app.use("/api/blog", blogRouter);
 //Connect Database
 connectDatabase();
 
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+});
+
 // Error Handling Middleware
 app.use(errorMiddleware);
 
