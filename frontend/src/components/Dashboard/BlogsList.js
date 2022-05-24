@@ -20,6 +20,9 @@ export default function BlogsList() {
   const [show, setShow] = useState(false);
   const [deleteId, setDeleteId] = useState(false);
   const [refresh, setRefresh] = useState(true);
+  const [perPage, setPerPage] = useState(5);
+  const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
 
   const { error: deleteError, isDeleted } = useSelector(
     (state) => state.delete
@@ -28,6 +31,7 @@ export default function BlogsList() {
 
   const {
     blogs,
+    count,
     loading,
     error: blogError,
   } = useSelector((state) => state.blogs);
@@ -57,9 +61,19 @@ export default function BlogsList() {
       setShow(false);
       dispatch({ type: BLOG_DELETE_RESET });
     }
-    dispatch(getBlogsAdmin());
-  }, [dispatch, deleteError, blogError, isDeleted, success, refresh]);
-  console.log(refresh);
+    dispatch(getBlogsAdmin(keyword, page, perPage));
+  }, [
+    dispatch,
+    deleteError,
+    blogError,
+    isDeleted,
+    success,
+    page,
+    perPage,
+    keyword,
+    refresh,
+  ]);
+
   const deleteOrderHandler = (e) => {
     e.preventDefault();
     if (deleteId) {
@@ -183,10 +197,17 @@ export default function BlogsList() {
           }}
           rows={rows}
           columns={columns}
-          pageSize={10}
+          pageSize={perPage}
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
+          onPageChange={(newPage) => {
+            setPage(newPage + 1);
+          }}
+          paginationMode="server"
+          onPageSizeChange={(newPageSize) => setPerPage(newPageSize)}
           disableSelectionOnClick
           className="productListTable"
           autoHeight
+          rowCount={count}
         />
         {show && (
           <div

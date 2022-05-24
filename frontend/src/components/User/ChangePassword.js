@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { updatePassword } from "../../actions/userAction";
 
 export default function ChangePassword({ shown }) {
+  const dispatch = useDispatch();
   const [show, setShow] = shown;
   const [showNewPass, setShowNewPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
@@ -9,6 +13,32 @@ export default function ChangePassword({ shown }) {
     newPassword: "",
     confirmPassword: "",
   });
+
+  const { success, error } = useSelector((state) => state.update);
+  const handleChange = (e) => {
+    setPassword({ ...password, [e.target.name]: e.target.value });
+  };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
+
+    if (success) {
+      toast.success("Update successfully", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      setShow(false);
+    }
+  }, [dispatch, success, error]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(updatePassword(password));
+  };
 
   return (
     <div>
@@ -34,18 +64,16 @@ export default function ChangePassword({ shown }) {
                       htmlFor="myInput"
                       className="text-sm font-medium leading-none text-gray-800"
                     >
-                      Password
+                      Old Password
                     </label>
                     <div className="relative flex items-center justify-center">
                       <input
                         required
                         id="myInput"
-                        value={password.oldPassword}
-                        onChange={(e) =>
-                          setPassword({ oldPassword: e.target.value })
-                        }
+                        name="oldPassword"
+                        onChange={handleChange}
                         type="password"
-                        placeholder="Enter Password"
+                        placeholder="Enter old Password"
                         className="bg-gray-200 border rounded text-xs font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2"
                       />
                     </div>
@@ -55,18 +83,16 @@ export default function ChangePassword({ shown }) {
                       htmlFor="myInput"
                       className="text-sm font-medium leading-none text-gray-800"
                     >
-                      Password
+                      New Password
                     </label>
                     <div className="relative flex items-center justify-center">
                       <input
                         required
                         id="myInput"
-                        value={password.newPassword}
-                        onChange={(e) =>
-                          setPassword({ newPassword: e.target.value })
-                        }
+                        name="newPassword"
+                        onChange={handleChange}
                         type={showNewPass ? "text" : "password"}
-                        placeholder="Enter Password"
+                        placeholder="Enter New Password"
                         className="bg-gray-200 border rounded text-xs font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2"
                       />
                       <div
@@ -96,18 +122,16 @@ export default function ChangePassword({ shown }) {
                       htmlFor="myInput"
                       className="text-sm font-medium leading-none text-gray-800"
                     >
-                      Password
+                      Confirm Password
                     </label>
                     <div className="relative flex items-center justify-center">
                       <input
                         required
                         id="myInput"
-                        value={password.confirmPassword}
-                        onChange={(e) =>
-                          setPassword({ confirmPassword: e.target.value })
-                        }
+                        name="confirmPassword"
+                        onChange={handleChange}
                         type={showConfirmPass ? "text" : "password"}
-                        placeholder="Enter Password"
+                        placeholder="Enter Confirm Password"
                         className="bg-gray-200 border rounded text-xs font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2"
                       />
                       <div
@@ -134,7 +158,10 @@ export default function ChangePassword({ shown }) {
                   </div>
                 </form>
 
-                <button className="focus:outline-none transition mt-6 w-full duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-4 sm:px-8 py-3 text-xs sm:text-sm">
+                <button
+                  onClick={handleSubmit}
+                  className="focus:outline-none transition mt-6 w-full duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-4 sm:px-8 py-3 text-xs sm:text-sm"
+                >
                   Change Password
                 </button>
 

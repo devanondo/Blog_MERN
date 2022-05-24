@@ -1,5 +1,6 @@
 //External Imports
 const bcrypt = require("bcrypt");
+var validator = require("validator");
 
 //Internal Imports
 const asyncError = require("../middleware/asyncError");
@@ -159,6 +160,26 @@ exports.updateUserRole = asyncError(async (req, res, next) => {
 
   if (!user) {
     return next(new ErrorHandler(`User not found! Id ${req.params.id} `, 404));
+  }
+  res.status(200).json({
+    success: true,
+  });
+});
+
+//Update User
+exports.updateUser = asyncError(async (req, res, next) => {
+  if (!validator.isMobilePhone(req.body.phone, ["bn-BD"])) {
+    return next(new ErrorHandler(`Invalid Phone`, 404));
+  }
+
+  const user = await User.findByIdAndUpdate(req.user.id, req.body, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  if (!user) {
+    return next(new ErrorHandler(`User not found! Id ${req.user.id} `, 404));
   }
   res.status(200).json({
     success: true,

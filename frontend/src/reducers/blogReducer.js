@@ -20,6 +20,7 @@ import {
   COMMENT_SUCCESS,
   CREATE_BLOG_FAIL,
   CREATE_BLOG_REQUEST,
+  CREATE_BLOG_RESET,
   CREATE_BLOG_SUCCESS,
   CREATE_CATEGORY_FAIL,
   CREATE_CATEGORY_REQUEST,
@@ -72,7 +73,8 @@ export const blogReducer = (state = { blogs: [] }, action) => {
     case GET_SAVED_SUCCESS:
       return {
         loading: false,
-        blogs: action.payload,
+        blogs: action.payload.blogs,
+        count: action.payload.totalBlogs,
       };
     case UPDATE_BLOG_SUCCESS:
       return {
@@ -104,6 +106,12 @@ export const blogReducer = (state = { blogs: [] }, action) => {
         ...state,
         loading: false,
         isUpdate: false,
+      };
+    case CREATE_BLOG_RESET:
+      return {
+        ...state,
+        loading: false,
+        success: false,
       };
     case CLEAR_ERROR:
       return {

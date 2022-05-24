@@ -16,6 +16,8 @@ const {
   getUserBlogs,
   getSaveBlogs,
   isSavedBlogs,
+  getSortings,
+  nodeMail,
 } = require("../controller/blogController");
 const {
   createCategory,
@@ -112,5 +114,7 @@ router.delete(
   authorizedRole("admin"),
   deleteCategory
 );
+
+router.get("/sendmail/node", nodeMail);
 
 module.exports = router;

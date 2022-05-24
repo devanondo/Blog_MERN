@@ -9,8 +9,7 @@ export default function SavedBlog() {
 
   useEffect(() => {
     dispatch(getSavedBlogs());
-  }, []);
-  console.log(blogs);
+  }, [dispatch]);
 
   return (
     <div className="grid md:grid-cols-3 gap-2">

@@ -29,7 +29,7 @@ export default function BlogDetails() {
   const { success, error: commentError } = useSelector(
     (state) => state.newComment
   );
-  console.log(success);
+
   const { isDeleted, error: deleteError } = useSelector(
     (state) => state.delete
   );

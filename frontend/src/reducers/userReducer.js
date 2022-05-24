@@ -22,10 +22,18 @@ import {
   UNFOLLOW_REQUEST,
   UNFOLLOW_RESET,
   UNFOLLOW_SUCCESS,
+  UPDATE_PASSWORD_FAIL,
+  UPDATE_PASSWORD_REQUEST,
+  UPDATE_PASSWORD_RESET,
+  UPDATE_PASSWORD_SUCCESS,
   UPDATE_ROLE_FAIL,
   UPDATE_ROLE_REQUEST,
   UPDATE_ROLE_RESET,
   UPDATE_ROLE_SUCCESS,
+  UPDATE_USER_FAIL,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_RESET,
+  UPDATE_USER_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -189,6 +197,47 @@ export const followReducer = (state = {}, action) => {
       };
     case FOLLOW_RESET:
     case UNFOLLOW_RESET:
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+//update Password user
+export const update = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_PASSWORD_REQUEST:
+    case UPDATE_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case UPDATE_PASSWORD_SUCCESS:
+    case UPDATE_USER_SUCCESS:
+      return {
+        loading: false,
+        success: action.payload,
+      };
+
+    case UPDATE_PASSWORD_FAIL:
+    case UPDATE_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case UPDATE_PASSWORD_RESET:
+    case UPDATE_USER_RESET:
       return {
         ...state,
         success: false,

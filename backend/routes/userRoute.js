@@ -16,6 +16,7 @@ const {
   followUser,
   saveBlogs,
   getLoggedInUser,
+  updateUser,
 } = require("../controller/userController");
 const upload = require("../multer/upload");
 const { isAuthenticatedUser, authorizedRole } = require("../middleware/auth");
@@ -40,6 +41,9 @@ router.put("/save/:id", isAuthenticatedUser, saveBlogs);
 
 //Update password
 router.put("/password/update", isAuthenticatedUser, updatePassword);
+
+//Update user
+router.put("/user/update", isAuthenticatedUser, updateUser);
 
 //Get all users --Admin
 router.get(

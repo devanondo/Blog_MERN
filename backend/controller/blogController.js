@@ -1,4 +1,5 @@
 //External Imports
+const nodemailer = require("nodemailer");
 
 //Internal Imports
 const asyncError = require("../middleware/asyncError");
@@ -40,32 +41,45 @@ exports.createBlog = asyncError(async (req, res, next) => {
 
 //Get all product and search
 exports.getAllBlogs = asyncError(async (req, res, next) => {
-  const resultPerPage = 9;
+  const totalBlogs = await Blog.countDocuments({ status: "approved" });
 
   const apiFeatures = new ApiFeatures(
-    Blog.find({ status: "approved" }).populate("user"),
+    Blog.find({ status: "approved" }).sort({ createdAt: -1 }).populate("user"),
     req.query
   )
     .search()
     .categorySearch()
-    .pagination(resultPerPage);
+    .pagination();
 
   const blogs = await apiFeatures.query;
   res.status(200).json({
     success: true,
     blogs,
+    totalBlogs,
   });
 });
 
 //Get all Blogs --Admin
 exports.getAllBlogsAdmin = asyncError(async (req, res, next) => {
-  const blogs = await Blog.find().populate("user");
+  const totalBlogs = await Blog.countDocuments();
+
+  const apiFeatures = new ApiFeatures(
+    Blog.find().sort({ createdAt: -1 }).populate("user"),
+    req.query
+  )
+    .search()
+    .categorySearch()
+    .pagination();
+
+  const blogs = await apiFeatures.query;
+
   if (!blogs) {
     return next(new ErrorHandler("Blog not found!", 404));
   }
   res.status(200).json({
     success: true,
     blogs,
+    totalBlogs,
   });
 });
 
@@ -271,5 +285,28 @@ exports.deleteMessage = asyncError(async (req, res, next) => {
 
   res.status(200).json({
     isDeleted: true,
+  });
+});
+
+//Node mailer
+exports.nodeMail = asyncError(async (req, res, next) => {
+  let transporter = nodemailer.createTransport({
+    service: process.env.SERVICE,
+    auth: {
+      user: process.env.MAIL,
+      pass: process.env.PASSWORD,
+    },
+  });
+
+  let info = transporter.sendMail({
+    from: process.env.MAIL,
+    to: "anondokpi@gmail.com",
+    subject: "Testing ",
+    text: "Testing something env",
+  });
+
+  res.status(200).json({
+    success: true,
+    info,
   });
 });

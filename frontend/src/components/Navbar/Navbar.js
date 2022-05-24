@@ -7,7 +7,7 @@ import AccountMenu from "./AccountMenu";
 function Header() {
   const { isAuthenticated } = useSelector((state) => state.user);
   return (
-    <>
+    <div className="">
       <Container
         component={
           <div className="flex py-4 px-2 justify-between">
@@ -36,7 +36,7 @@ function Header() {
           </div>
         }
       />
-    </>
+    </div>
   );
 }
 

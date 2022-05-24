@@ -15,7 +15,6 @@ import slugify from "../../utils/SlugGenerator";
 import Container from "../Layout/Container";
 import Loader from "../Layout/Loader";
 import Navbar from "../Navbar/Navbar";
-import CreateBlog from "./CreateBlog";
 import UserContainer from "./UserContainer";
 
 export default function UserProfile() {
@@ -101,7 +100,7 @@ export default function UserProfile() {
                         />
                       </div>
                     </div>
-                    <div className="px-5">
+                    <div className="px-5 pb-5 border-b">
                       <div className="flex justify-center xl:justify-end w-full pt-16 xl:pt-5">
                         {/* Rating star add wil later */}
                       </div>
@@ -164,21 +163,14 @@ export default function UserProfile() {
                               Available
                             </div>
                           </div>
-
-                          {loggedUser && loggedUser._id === id ? (
-                            <CreateBlog />
-                          ) : (
-                            <button className="mx-auto focus:outline-none md:ml-5 bg-indigo-700 dark:bg-indigo-600 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-sm">
-                              Message
-                            </button>
-                          )}
                         </div>
                       </div>
                     </div>
-                    <div className="my-5 w-full md:px-2">
-                      <h2 className="text-md font-semibold mb-3">Blog's</h2>
+                    {/* Sidebar */}
+
+                    <div className="w-full md:px-2">
                       <div className="md:grid grid-cols-5 gap-3">
-                        <div className="col-span-1">
+                        <div className="col-span-1 border-r">
                           <NavLink
                             className={({ isActive }) =>
                               `p-2 my-1 hover:bg-indigo-300 hover:text-white block w-full   ${
@@ -230,6 +222,21 @@ export default function UserProfile() {
                           >
                             Follower
                           </NavLink>
+
+                          {loggedUser?._id === user?._id && (
+                            <NavLink
+                              className={({ isActive }) =>
+                                `p-2 my-1 hover:bg-indigo-300 hover:text-white block w-full   ${
+                                  isActive && "bg-indigo-500 text-white"
+                                } `
+                              }
+                              to={`/profile/${
+                                user && slugify(user?.name)
+                              }/${id}/create`}
+                            >
+                              Create Blog
+                            </NavLink>
+                          )}
                           <NavLink
                             className={({ isActive }) =>
                               `p-2 my-1 hover:bg-indigo-300 hover:text-white block w-full   ${
@@ -243,7 +250,7 @@ export default function UserProfile() {
                             Following
                           </NavLink>
                         </div>
-                        <div className="col-span-4">
+                        <div className="col-span-4 py-2 pb-4">
                           <UserContainer user={user} />
                         </div>
                       </div>

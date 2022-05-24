@@ -11,6 +11,7 @@ import {
 import {
   allUserReducer,
   followReducer,
+  update,
   userDetails,
   userReducer,
 } from "./reducers/userReducer";
@@ -28,6 +29,7 @@ const store = configureStore({
     category: categoryReducer,
     status: statusReducer,
     isBlogSave: checkSavedBlog,
+    update: update,
   },
 });
 

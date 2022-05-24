@@ -20,9 +20,15 @@ import {
   UNFOLLOW_FAIL,
   UNFOLLOW_REQUEST,
   UNFOLLOW_SUCCESS,
+  UPDATE_PASSWORD_FAIL,
+  UPDATE_PASSWORD_REQUEST,
+  UPDATE_PASSWORD_SUCCESS,
   UPDATE_ROLE_FAIL,
   UPDATE_ROLE_REQUEST,
   UPDATE_ROLE_SUCCESS,
+  UPDATE_USER_FAIL,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -176,7 +182,6 @@ export const follow = (id) => async (dispatch) => {
 
 //UnFollow a user
 export const unFollow = (id) => async (dispatch) => {
-  console.log(id);
   try {
     dispatch({ type: UNFOLLOW_REQUEST });
 
@@ -186,6 +191,38 @@ export const unFollow = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UNFOLLOW_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+//Update user
+export const updateUser = (userData) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_USER_REQUEST });
+
+    let { data } = await axios.put(`/api/blog/user/update`, userData);
+
+    dispatch({ type: UPDATE_USER_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_USER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+//Update password
+export const updatePassword = (password) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_PASSWORD_REQUEST });
+
+    let { data } = await axios.put(`/api/blog/password/update`, password);
+
+    dispatch({ type: UPDATE_PASSWORD_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PASSWORD_FAIL,
       payload: error.response.data.message,
     });
   }

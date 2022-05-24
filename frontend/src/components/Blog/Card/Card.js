@@ -15,7 +15,9 @@ export default function Card({ blog }) {
   const isSavedBlog = user?.savedBlogs.includes(blog?._id);
 
   useEffect(() => {
-    dispatch(loadUser());
+    if (isSaved) {
+      dispatch(loadUser());
+    }
   }, [dispatch, error, isSaved]);
 
   const handleBookmark = (e) => {

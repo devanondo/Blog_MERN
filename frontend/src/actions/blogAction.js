@@ -59,48 +59,53 @@ export const createBlog = (formData) => async (dispatch) => {
 };
 
 //GET All blogs
-export const getBlogs = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: ALL_BLOG_REQUEST,
-    });
+export const getBlogs =
+  (keyword = "", currentPage) =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: ALL_BLOG_REQUEST,
+      });
 
-    const link = "/api/blog/all";
-    const { data } = await axios.get(link);
+      const link = `/api/blog/all?keyword=${keyword}&page=${currentPage}&perpage=12`;
+      console.log(link);
+      const { data } = await axios.get(link);
 
-    dispatch({
-      type: ALL_BLOG_SUCCESS,
-      payload: data.blogs,
-    });
-  } catch (error) {
-    dispatch({
-      type: ALL_BLOG_FAIL,
-      payload: error.response?.data.message,
-    });
-  }
-};
+      dispatch({
+        type: ALL_BLOG_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_BLOG_FAIL,
+        payload: error.response?.data.message,
+      });
+    }
+  };
 
 //GET All blogs
-export const getBlogsAdmin = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: ALL_BLOG_REQUEST,
-    });
+export const getBlogsAdmin =
+  (keyword = "", currentPage, perPage) =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: ALL_BLOG_REQUEST,
+      });
 
-    const link = "/api/blog/admin/all";
-    const { data } = await axios.get(link);
+      const link = `/api/blog/admin/all?keyword=${keyword}&page=${currentPage}&perpage=${perPage}`;
+      const { data } = await axios.get(link);
 
-    dispatch({
-      type: ALL_BLOG_SUCCESS,
-      payload: data.blogs,
-    });
-  } catch (error) {
-    dispatch({
-      type: ALL_BLOG_FAIL,
-      payload: error.response?.data.message,
-    });
-  }
-};
+      dispatch({
+        type: ALL_BLOG_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_BLOG_FAIL,
+        payload: error.response?.data.message,
+      });
+    }
+  };
 
 //dELETE BLOGS
 export const deleteBlog = (id) => async (dispatch) => {
@@ -269,7 +274,7 @@ export const getSavedBlogs = (id) => async (dispatch) => {
 
     dispatch({
       type: GET_SAVED_SUCCESS,
-      payload: data.blogs,
+      payload: data,
     });
   } catch (error) {
     dispatch({
