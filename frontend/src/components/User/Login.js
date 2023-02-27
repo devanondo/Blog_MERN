@@ -14,9 +14,7 @@ export default function Login() {
   const navigate = useNavigate();
   let location = useLocation();
 
-  const { error, isAuthenticated, user, loading } = useSelector(
-    (state) => state.user
-  );
+  const { error, isAuthenticated, user } = useSelector((state) => state.user);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -41,7 +39,7 @@ export default function Login() {
       });
       navigate(from, { replace: true });
     }
-  }, [dispatch, error, isAuthenticated, navigate, user]);
+  }, [dispatch, error, isAuthenticated, navigate, user, from]);
 
   return (
     <Container
@@ -127,40 +125,13 @@ export default function Login() {
                   <div className="mt-8">
                     <button
                       onClick={handleLogin}
-                      className="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-sm font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-full"
+                      className="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-sm font-semibold leading-none text-white focus:outline-1 bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-full"
                       // disabled={loading ? true : false}
                     >
                       Login my account
                     </button>
                   </div>
                 </form>
-              </div>
-              <div className="xl:w-1/3 md:w-1/2 lg:ml-16 ml-8 md:mt-0 mt-6">
-                <div className="flex items-start mt-8">
-                  <p className="sm:text-2xl text-xl leading-7 text-gray-600 pl-2.5">
-                    Generating random paragraphs can be an excellent way for
-                    writers to get their creative flow going at the beginning of
-                    the day. The writer has no idea what topic the random
-                    paragraph will be about when it appears
-                  </p>
-                </div>
-                <div className="flex items-center pl-8 mt-10">
-                  <div className="w-8 h-8">
-                    <img
-                      src="https://i.ibb.co/xLtZCRT/Mask-Group.png"
-                      alt="profile picture"
-                      className="w-full h-full"
-                    />
-                  </div>
-                  <div className="ml-2">
-                    <p className="text-sm font-medium leading-none text-gray-800">
-                      Anita Jane
-                    </p>
-                    <p className="text-sm font-medium leading-none text-gray-600 mt-1 cursor-pointer hover:underline">
-                      See profile
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

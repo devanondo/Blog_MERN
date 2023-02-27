@@ -201,12 +201,13 @@ exports.deleteBlog = asyncError(async (req, res, next) => {
     return next(new ErrorHandler("Internal server Error", 404));
   }
 
+  // removed image
+  fs.unlinkSync(`${__dirname}/../public/uploads/${blog.coverImage?.trim()}`);
+
   await category.updateOne({
     $pull: { blogs: blog._id },
   });
 
-  // removed image
-  fs.unlinkSync(`${__dirname}/../public/uploads/${blog.coverImage?.trim()}`);
   await blog.remove();
 
   res.status(200).json({

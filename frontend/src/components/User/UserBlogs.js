@@ -63,7 +63,7 @@ export default function UserBlogs() {
             )}
           </li>
 
-          {loadUser._id === id && (
+          {loadUser?._id === id && (
             <li
               onClick={function (e) {
                 e.preventDefault();
@@ -84,7 +84,7 @@ export default function UserBlogs() {
               )}
             </li>
           )}
-          {loadUser._id === id && (
+          {loadUser?._id === id && (
             <li
               onClick={function (e) {
                 e.preventDefault();
@@ -108,13 +108,14 @@ export default function UserBlogs() {
         </ul>
       </div>
 
-      <div className="grid md:grid-cols-3 my-4 gap-2">
-        {filteredBlogs &&
-          filteredBlogs.map((blog, index) => (
-            <div key={index} className="col-span-1">
-              <RecentBlogCard blog={blog} />
-            </div>
-          ))}
+      <div className="grid md:grid-cols-2 my-4 gap-2">
+        {filteredBlogs && filteredBlogs.length > 0
+          ? filteredBlogs.map((blog, index) => (
+              <div key={index} className="col-span-1 bg-white">
+                <RecentBlogCard blog={blog} />
+              </div>
+            ))
+          : "Blog not found!"}
       </div>
       <Outlet />
     </div>

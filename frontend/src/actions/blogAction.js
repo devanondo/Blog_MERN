@@ -68,9 +68,8 @@ export const getBlogs =
       });
 
       const link = `/api/blog/all?keyword=${keyword}&page=${currentPage}&perpage=12`;
-      console.log(link);
       const { data } = await axios.get(link);
-
+      console.log(data, "action");
       dispatch({
         type: ALL_BLOG_SUCCESS,
         payload: data,

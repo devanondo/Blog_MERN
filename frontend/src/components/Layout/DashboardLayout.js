@@ -25,7 +25,9 @@ export default function DashboardLayout() {
         <div className="flex flex-no-wrap">
           {/* Sidebar starts */}
           <div className="absolute lg:relative w-64 h-screen shadow bg-gray-100 hidden lg:block">
-            <div className="h-16 w-full flex items-center px-8">AIR BLOGS</div>
+            <Link to="/" className="h-16 w-full flex items-center px-8">
+              DAILY-BLOGS71
+            </Link>
             <ul className=" py-6">
               <li className="pl-6 cursor-pointer text-sm leading-3 tracking-normal pb-4 pt-5 text-indigo-700 focus:text-indigo-700 focus:outline-none">
                 <div className="flex items-center">
@@ -94,7 +96,9 @@ export default function DashboardLayout() {
                     <polyline points="8 16 10 10 16 8 14 14 8 16" />
                     <circle cx={12} cy={12} r={9} />
                   </svg>
-                  <Link to="/dashboard/authors"> All Author's</Link>
+                  <span className="ml-2">
+                    <Link to="/dashboard/authors"> All Author's</Link>
+                  </span>
                 </div>
               </li>
               <li className="pl-6 cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
@@ -141,7 +145,7 @@ export default function DashboardLayout() {
                 <div>
                   <div className="flex items-center justify-between px-8">
                     <div className="h-16 w-full flex items-center">
-                      AIR BLOGS
+                      DAILY-BLOGS71
                     </div>
                     <div
                       id="closeSideBar"
@@ -187,8 +191,8 @@ export default function DashboardLayout() {
                             <rect x={14} y={14} width={6} height={6} rx={1} />
                           </svg>
                         </div>
-                        <span className="ml-2 xl:text-base md:text-2xl text-base">
-                          Dashboard
+                        <span className="ml-2">
+                          <Link to="/dashboard">Dashboard</Link>
                         </span>
                       </div>
                     </li>
@@ -209,8 +213,8 @@ export default function DashboardLayout() {
                             <path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1" />
                           </svg>
                         </div>
-                        <span className="ml-2 xl:text-base md:text-2xl text-base">
-                          Products
+                        <span className="ml-2">
+                          <Link to="/dashboard/category">Blog Category</Link>
                         </span>
                       </div>
                     </li>
@@ -232,8 +236,8 @@ export default function DashboardLayout() {
                             <circle cx={12} cy={12} r={9} />
                           </svg>
                         </div>
-                        <span className="ml-2 xl:text-base md:text-2xl text-base">
-                          Performance
+                        <span className="ml-2">
+                          <Link to="/dashboard/authors"> All Author's</Link>
                         </span>
                       </div>
                     </li>
@@ -256,8 +260,8 @@ export default function DashboardLayout() {
                             <line x1={14} y1={4} x2={10} y2={20} />
                           </svg>
                         </div>
-                        <span className="ml-2 xl:text-base md:text-2xl text-base">
-                          Deliverables
+                        <span className="ml-2">
+                          <Link to="/dashboard/blogs">All Blogs</Link>
                         </span>
                       </div>
                     </li>
@@ -300,7 +304,7 @@ export default function DashboardLayout() {
                           className="w-8 h-8 rounded-md"
                         />
                         <p className="md:text-xl text-gray-800 text-base leading-4 ml-2">
-                          Jane Doe
+                          {user?.name}
                         </p>
                       </div>
                       <ul className="flex">
@@ -486,7 +490,7 @@ export default function DashboardLayout() {
                           <div className="w-2 h-2 rounded-full bg-green-400 border border-white absolute inset-0 mb-0 mr-0 m-auto" />
                         </div>
                       </div>
-                      <p className="text-gray-800 text-sm mx-3">Jane Doe</p>
+                      <p className="text-gray-800 text-sm mx-3">{user?.name}</p>
                       <div className="cursor-pointer text-gray-600">
                         <svg
                           aria-haspopup="true"

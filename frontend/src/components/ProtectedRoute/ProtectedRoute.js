@@ -7,10 +7,11 @@ export default function ProtectedRoute({ children, isAdmin }) {
 
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
 
-  if (isAuthenticated === false) {
+  if (loading === false && isAdmin === true && user.role !== "admin") {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
-  if (loading === false && isAdmin === true && user.role !== "admin") {
+
+  if (isAuthenticated === false) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

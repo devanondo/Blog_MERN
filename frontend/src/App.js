@@ -7,8 +7,12 @@ import Routing from "./pages/Routing";
 import store from "./store";
 
 function App() {
+  const getUser = async () => {
+    await store.dispatch(loadUser());
+  };
+
   useEffect(() => {
-    store.dispatch(loadUser());
+    getUser();
   }, []);
 
   return (

@@ -32,7 +32,6 @@ export default function BlogsList() {
   const {
     blogs,
     count,
-    loading,
     error: blogError,
   } = useSelector((state) => state.blogs);
 

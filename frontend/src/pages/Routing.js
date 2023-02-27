@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import BlogDetails from "../components/Blog/BlogDetails";
+import Blogs from "../components/Blog/Blogs";
 import CategoryPage from "../components/Blog/CategoryPage";
 import EditBlog from "../components/Blog/EditBlog";
 import Follower from "../components/Blog/Follower/Follower";
@@ -13,7 +14,6 @@ import SingleBlog from "../components/Dashboard/SingleBlog";
 import Header from "../components/Home/Header";
 import { Home } from "../components/Home/Home";
 import DashboardLayout from "../components/Layout/DashboardLayout";
-import Hfront from "../components/Layout/Hfront";
 import NotFound from "../components/NotFound";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import About from "../components/User/About";
@@ -30,7 +30,10 @@ function Routing() {
       <Route path="/" element={<Home />}>
         <Route index element={<Header />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/header" element={<Hfront />} />
+        {/* <Route path="/crop" element={<Crop />} /> */}
+        <Route path="/blogs" element={<Blogs />}>
+          <Route path=":query" element={<Blogs />} />
+        </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="/profile/:username/:id" element={<UserProfile />}>

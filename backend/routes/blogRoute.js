@@ -94,10 +94,10 @@ router.post(
 );
 
 //Category get
-router.get("/category/all", isAuthenticatedUser, getAllCategory);
+router.get("/category/all", getAllCategory);
 
 //Get single Category
-router.get("/category/:category", isAuthenticatedUser, getSingleCategory);
+router.get("/category/:category", getSingleCategory);
 
 //Category update
 router.put(

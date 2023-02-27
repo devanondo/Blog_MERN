@@ -12,10 +12,10 @@ export default function SavedBlog() {
   }, [dispatch]);
 
   return (
-    <div className="grid md:grid-cols-3 gap-2">
+    <div className="grid md:grid-cols-2 gap-2">
       {blogs &&
         blogs.map((item, index) => (
-          <div className="col-span-1">
+          <div className="col-span-1 bg-white">
             <Card blog={item} key={index} />
           </div>
         ))}

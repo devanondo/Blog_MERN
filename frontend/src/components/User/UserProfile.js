@@ -11,10 +11,11 @@ import {
   unFollow,
 } from "../../actions/userAction";
 import { FOLLOW_RESET } from "../../constants/userConstants";
+import MetaData from "../../utils/MetaData";
 import slugify from "../../utils/SlugGenerator";
 import Container from "../Layout/Container";
 import Loader from "../Layout/Loader";
-import Navbar from "../Navbar/Navbar";
+import Nav from "../Navbar/Nav";
 import UserContainer from "./UserContainer";
 
 export default function UserProfile() {
@@ -80,7 +81,8 @@ export default function UserProfile() {
       ) : (
         user && (
           <>
-            <Navbar />
+            <Nav />
+            <MetaData title={user?.name} />
             <Container
               component={
                 <div className="flex items-center justify-center w-full">
@@ -89,10 +91,10 @@ export default function UserProfile() {
                     <div className="relative">
                       <img
                         className="h-56 shadow  w-full object-cover object-center"
-                        src="https://tuk-cdn.s3.amazonaws.com/assets/components/grid_cards/gc_29.png"
+                        src={PF + "cover.jpg"}
                         alt=""
                       />
-                      <div className="inset-0 m-auto w-24 h-24 absolute bottom-0 -mb-12 xl:ml-10 rounded-full overflow-hidden border-2 shadow border-white">
+                      <div className="inset-0 m-auto w-32 h-32 absolute bottom-0 -mb-16 xl:ml-10 rounded-full overflow-hidden border-8 shadow border-slate-400">
                         <img
                           className="w-full h-full overflow-hidden object-cover rounded"
                           src={PF + user.profilePicture}
@@ -105,7 +107,7 @@ export default function UserProfile() {
                         {/* Rating star add wil later */}
                       </div>
 
-                      <div className="pt-3 xl:pt-5 flex flex-col xl:flex-row items-start xl:items-center justify-between">
+                      <div className="pt-3 xl:pt-12 px-4 flex flex-col xl:flex-row items-start xl:items-center justify-between">
                         <div className="xl:pr-16 w-full xl:w-2/3">
                           <div className="text-center xl:text-left mb-3 xl:mb-0 flex flex-col xl:flex-row items-center justify-between xl:justify-start">
                             <h2 className="mb-3 xl:mb-0 xl:mr-4 text-2xl text-gray-800 dark:text-gray-100 font-medium tracking-normal">
@@ -168,8 +170,8 @@ export default function UserProfile() {
                     </div>
                     {/* Sidebar */}
 
-                    <div className="w-full md:px-2">
-                      <div className="md:grid grid-cols-5 gap-3">
+                    <div className="w-full px-2 md:px-0">
+                      <div className="md:grid grid-cols-5">
                         <div className="col-span-1 border-r">
                           <NavLink
                             className={({ isActive }) =>
@@ -250,7 +252,7 @@ export default function UserProfile() {
                             Following
                           </NavLink>
                         </div>
-                        <div className="col-span-4 py-2 pb-4">
+                        <div className="col-span-4">
                           <UserContainer user={user} />
                         </div>
                       </div>

@@ -8,12 +8,11 @@ export default function FollowCard({ follower, show }) {
   const dispatch = useDispatch();
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
-  const { message, success, error } = useSelector((state) => state.follow);
   const { user: loadUser } = useSelector((state) => state.user);
 
   return (
     <div className="col-span-1">
-      <div className="flex flex-col items-center py-6 px-4 bg-gradient-to-r border rounded-lg">
+      <div className="flex flex-col bg-white items-center py-6 px-4 bg-gradient-to-r border rounded-lg">
         <div className="w-full flex-col items-center justify-center">
           <h2 className="text-sm pb-4">About post</h2>
           <div className=" w-20 h-20 mx-auto border rounded-full overflow-hidden">

@@ -9,7 +9,7 @@ export default function RecentBlogCard({ blog }) {
   const { user } = useSelector((state) => state.user);
 
   return (
-    <div className="border w-full rounded overflow-hidden mb-4">
+    <div className="w-full rounded overflow-hidden mb-4">
       <div className=" max-h-52 overflow-hidden z-50 relative">
         {user && user?._id === blog?.user && (
           <div className="top-5 right-5 absolute">
@@ -31,7 +31,7 @@ export default function RecentBlogCard({ blog }) {
         </Link>
 
         <Link to={`/blog/${blog?._id}`} className="">
-          <h2 className="text-md font-semibold hover:text-indigo-400 mb-2">
+          <h2 className="text-sm font-medium capitalize hover:text-indigo-400 mb-2">
             {blog?.title}
           </h2>
         </Link>

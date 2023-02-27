@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { getACategory } from "../../actions/categoryAction";
 import Container from "../Layout/Container";
 import Loader from "../Layout/Loader";
-import Navbar from "../Navbar/Navbar";
+import Nav from "../Navbar/Nav";
 import Card from "./Card/Card";
 
 export default function CategoryPage() {
@@ -12,15 +12,13 @@ export default function CategoryPage() {
   const dispatch = useDispatch();
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
-  const {
-    loading,
-    error,
-    category: categoryData,
-  } = useSelector((state) => state.category);
+  const { loading, category: categoryData } = useSelector(
+    (state) => state.category
+  );
 
   useEffect(() => {
     dispatch(getACategory(category));
-  }, [dispatch]);
+  }, [dispatch, category]);
 
   let newTime = function (d) {
     let date = new Date(d);
@@ -37,7 +35,7 @@ export default function CategoryPage() {
         <Loader />
       ) : (
         <>
-          <Navbar />
+          <Nav />
           <Container
             component={
               <>

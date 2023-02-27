@@ -78,7 +78,7 @@ export default function CreateBlog() {
   };
 
   const config = {
-    readonly: false, // all options from https://xdsoft.net/jodit/doc/
+    autofocus: true,
     iframe: true,
     uploader: {
       insertImageAsBase64URI: true,

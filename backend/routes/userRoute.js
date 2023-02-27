@@ -46,12 +46,7 @@ router.put("/password/update", isAuthenticatedUser, updatePassword);
 router.put("/user/update", isAuthenticatedUser, updateUser);
 
 //Get all users --Admin
-router.get(
-  "/admin/users/all",
-  isAuthenticatedUser,
-  authorizedRole("admin"),
-  getAllUsers
-);
+router.get("/users/all", getAllUsers);
 
 //Get a single User --Admin
 router.get(

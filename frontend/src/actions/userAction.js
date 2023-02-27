@@ -88,7 +88,7 @@ export const getAllUsers = () => async (dispatch) => {
     dispatch({
       type: ALL_USER_REQUEST,
     });
-    const { data } = await axios.get("/api/blog/admin/users/all");
+    const { data } = await axios.get("/api/blog/users/all");
 
     dispatch({ type: ALL_USER_SUCCESS, payload: data.users });
     console.log(data);

@@ -32,7 +32,7 @@ export default function ChangePassword({ shown }) {
       });
       setShow(false);
     }
-  }, [dispatch, success, error]);
+  }, [dispatch, success, setShow, error]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

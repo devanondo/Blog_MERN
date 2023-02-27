@@ -30,7 +30,7 @@ export default function About() {
 
   return (
     <>
-      <form className="w-full bg-white">
+      <form className="w-full p-2 bg-white">
         <h2 className="text-xl font-semibold leading-7 text-gray-800">
           Personal Info
         </h2>
@@ -46,7 +46,7 @@ export default function About() {
               type="name"
               value={userInfo.name}
               tabIndex={0}
-              className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
+              className="w-full md:w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
               placeholder="Enter your name ..."
             />
           </div>
@@ -60,7 +60,7 @@ export default function About() {
               onChange={handleChange}
               value={userInfo.phone}
               tabIndex={0}
-              className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
+              className="w-full md:w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
               placeholder="Enter your number ..."
             />
           </div>
@@ -75,7 +75,7 @@ export default function About() {
               tabIndex={0}
               value={userInfo.email}
               aria-label="Enter email Address"
-              className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
+              className="w-full md:w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
               placeholder="@gmail.com"
             />
           </div>
@@ -89,7 +89,7 @@ export default function About() {
               name="address"
               onChange={handleChange}
               value={userInfo.address}
-              className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
+              className="w-full md:w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
               placeholder="Enter place of birth"
             />
           </div>
@@ -106,7 +106,7 @@ export default function About() {
               onChange={handleChange}
               value={userInfo.dateOfBirth}
               aria-label="Enter date of birth"
-              className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
+              className="w-full md:w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
               defaultValue="28.03.1997"
             />
           </div>

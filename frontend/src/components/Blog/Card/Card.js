@@ -27,7 +27,7 @@ export default function Card({ blog }) {
   };
 
   return (
-    <div className="border w-full rounded overflow-hidden mb-4">
+    <div className="w-full rounded overflow-hidden mb-4">
       <div className=" max-h-52 overflow-hidden z-10 relative">
         <Link to={`/blog/${blog?._id}`} className="">
           <img className="w-full" src={PF + blog?.coverImage} alt="" />
@@ -42,9 +42,9 @@ export default function Card({ blog }) {
           {blog?.category}
         </Link>
 
-        <div className="flex gap-2 justify-between">
+        <div className="flex gap-2 justify-between items-center">
           <Link to={`/blog/${blog?._id}`} className="flex gap-2">
-            <h2 className="text-md font-semibold hover:text-indigo-400 mb-2">
+            <h2 className="text-sm capitalize font-medium hover:text-indigo-400 mb-2">
               {blog?.title}
             </h2>
           </Link>

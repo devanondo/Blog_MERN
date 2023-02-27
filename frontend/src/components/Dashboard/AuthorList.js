@@ -24,11 +24,7 @@ export default function AuthorList() {
     (state) => state.userDetails
   );
 
-  const {
-    users,
-    loading,
-    error: userError,
-  } = useSelector((state) => state.users);
+  const { users } = useSelector((state) => state.users);
 
   useEffect(() => {
     if (deleteError) {

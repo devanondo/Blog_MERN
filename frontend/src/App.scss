@@ -6,12 +6,21 @@
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
 }
-
+.bgcustom {
+  background-image: radial-gradient(
+    circle,
+    #cdd3ff,
+    #cdcff0,
+    #cbcbe1,
+    #c8c7d2,
+    #c4c4c4
+  );
+}
 .line-shorter {
   white-space: nowrap;
+  width: 230px;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 40ch;
 }
 .m-h-80vh {
   max-height: 80vh;

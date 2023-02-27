@@ -17,9 +17,10 @@ import {
   COMMENT_RESET,
 } from "../../constants/blogConstants";
 import MetaData from "../../utils/MetaData";
+import slugify from "../../utils/SlugGenerator";
 import Container from "../Layout/Container";
 import Loader from "../Layout/Loader";
-import Navbar from "../Navbar/Navbar";
+import Nav from "../Navbar/Nav";
 import SubHeader from "../SubHeader/SubHeader";
 import FollowCard from "./Follower/FollowCard";
 
@@ -61,6 +62,12 @@ export default function BlogDetails() {
       });
       dispatch(clearError());
     }
+    if (blogsError) {
+      toast.error(blogsError, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      dispatch(clearError());
+    }
     if (success) {
       toast.success("Comment Added successfully", {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -78,7 +85,7 @@ export default function BlogDetails() {
       setAnchorEl(null);
       dispatch({ type: COMMENT_DELETE_RESET });
     }
-  }, [success, commentError, dispatch, isDeleted]);
+  }, [success, commentError, dispatch, isDeleted, blogsError]);
 
   useEffect(() => {
     if (error) {
@@ -134,7 +141,7 @@ export default function BlogDetails() {
         <div>
           {blog && (
             <div>
-              <Navbar />
+              <Nav />
               <MetaData
                 title={"Blog Details"}
                 description={blog?.description}
@@ -188,7 +195,7 @@ export default function BlogDetails() {
                             ? blog.comments.map((comment, index) => (
                                 <div
                                   key={index}
-                                  className="border my-2 p-2 w-full md:max-w-lg"
+                                  className="border bg-white rounded my-2 p-2 w-full md:max-w-lg"
                                 >
                                   <div className="flex  items-center justify-between">
                                     <div className="flex  items-center gap-2">
@@ -234,9 +241,15 @@ export default function BlogDetails() {
                                         }}
                                       >
                                         <div className="p-2">
-                                          <p className="text-xs hover:text-indigo-500 mb-2 cursor-pointer font-normal">
+                                          <Link
+                                            to={`/profile/${
+                                              blog && slugify(blog?.user?.name)
+                                            }/${blog?.user?._id}/about`}
+                                            className="text-xs hover:text-indigo-500 mb-2 cursor-pointer font-normal"
+                                          >
                                             View Profile
-                                          </p>
+                                          </Link>
+
                                           {commentId &&
                                             user._id === comment.user && (
                                               <button
@@ -257,7 +270,7 @@ export default function BlogDetails() {
 
                                   <div className="p-2 max-w-xl rounded  ">
                                     <p
-                                      className={`bg-indigo-200 w-fit p-2 rounded-md text-xs`}
+                                      className={`bg-indigo-100 w-fit p-2 rounded-md text-xs`}
                                     >
                                       {comment.message}
                                     </p>
@@ -320,7 +333,7 @@ export default function BlogDetails() {
                     <div className="col-span-3">
                       <FollowCard follower={blog?.user} show={true} />
 
-                      <div className="my-4 border rounded p-4">
+                      <div className="my-4 border bg-white rounded p-4">
                         <div className="flex justify-between items-center">
                           <h2 className="text-sm">Blogs</h2>
                           <Link
@@ -334,7 +347,7 @@ export default function BlogDetails() {
                           {userBlogs &&
                             userBlogs.slice(0, 6).map((item, index) => (
                               <Link to={`/blog/${item._id}`} key={index}>
-                                <p className="font-bold my-2 line-shorter hover:text-indigo-400 ">
+                                <p className="font-normal my-2 line-shorter hover:text-indigo-400 ">
                                   {index + 1}. {item.title}
                                 </p>
                               </Link>
